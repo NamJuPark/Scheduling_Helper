@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
         intent = getIntent();
         todo = intent.getParcelableExtra("madetodo");
-
         addData(todo);
 
     }
