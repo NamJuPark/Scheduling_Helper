@@ -59,6 +59,7 @@ import java.util.Date;
     public boolean getWeek(int i) {
         return week[i];
     }
+    public boolean[] getWeekArray() {return week;}
     public void setTitle(String title) {
         this.title = title;
     }
@@ -73,6 +74,9 @@ import java.util.Date;
     public void setWeek(int i, boolean b){
         this.week[i] = b;
     }
+    public void setWeekArray(boolean[] weekArray) {
+        this.week = weekArray;
+    }
 
     @Override
     public int describeContents() {
@@ -86,4 +90,6 @@ import java.util.Date;
         parcel.writeInt(priority);
         parcel.writeBooleanArray(week);
     }
+
+
 }

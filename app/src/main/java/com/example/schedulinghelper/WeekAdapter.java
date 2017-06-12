@@ -71,4 +71,17 @@ public class WeekAdapter extends BaseAdapter{
         todo.add(todoitem);
         notifyDataSetChanged();
     }
+
+    public void delToDo(int i){
+        todo.remove(i);
+        notifyDataSetChanged();
+    }
+
+    public void changeToDo(int changeIndex, ToDo changedtodo){
+        todo.get(changeIndex).setTitle(changedtodo.getTitle());
+        todo.get(changeIndex).setMemo(changedtodo.getMemo());
+        todo.get(changeIndex).setPriority(changedtodo.getPriority());
+        todo.get(changeIndex).setWeekArray(changedtodo.getWeekArray());
+        notifyDataSetChanged();
+    }
 }
