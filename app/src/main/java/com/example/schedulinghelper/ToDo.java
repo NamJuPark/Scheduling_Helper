@@ -16,10 +16,8 @@ import java.util.Date;
     private String title;
     private String memo;
     private int priority;
-    boolean week[];
 
-    ToDo(String title, String memo, int priority , boolean week[]){
-        this.week = week;
+    ToDo(String title, String memo, int priority){
         this.title = title;
         this.memo = memo;
         this.priority = priority;
@@ -29,7 +27,6 @@ import java.util.Date;
         title = in.readString();
         memo = in.readString();
         priority = in.readInt();
-        week = in.createBooleanArray();
     }
 
 
@@ -56,10 +53,6 @@ import java.util.Date;
     public int getPriority() {
         return priority;
     }
-    public boolean getWeek(int i) {
-        return week[i];
-    }
-    public boolean[] getWeekArray() {return week;}
     public void setTitle(String title) {
         this.title = title;
     }
@@ -71,11 +64,7 @@ import java.util.Date;
     public void setPriority(int priority) {
         this.priority = priority;
     }
-    public void setWeek(int i, boolean b){
-        this.week[i] = b;
-    }
     public void setWeekArray(boolean[] weekArray) {
-        this.week = weekArray;
     }
 
     @Override
@@ -88,7 +77,6 @@ import java.util.Date;
         parcel.writeString(title);
         parcel.writeString(memo);
         parcel.writeInt(priority);
-        parcel.writeBooleanArray(week);
     }
 
 
