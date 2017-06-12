@@ -64,15 +64,15 @@ public class MakeToDOActivity extends AppCompatActivity {
 
     private void save() {//인텐트로 정보 보내기
 
-        Log.d("남주","70");
+        Intent intent  = getIntent();
+        ToDo todo = intent.getParcelableExtra("maketodo");
+
         title_ = title.getText().toString();
         memo_ = memo.getText().toString();
-        Log.d("남주","73");
         if(title_.equals("")){
             Toast.makeText(this,"Title을 입력해 주세요.(필수항목)",Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.d("남주","78");
         if(high.isChecked()){
             priority = 0;
         }else if(mid.isChecked()){
@@ -80,22 +80,23 @@ public class MakeToDOActivity extends AppCompatActivity {
         }else if(low.isChecked()){
             priority = 2;
         }
-        Log.d("남주","83");
         checkWeek();
-        Log.d("남주","85");
         if(week[0] == false && week[1] == false && week[2] == false && week[3] == false && week[4] == false && week[5] == false && week[6] == false){
             Toast.makeText(this, "요일을 체크해 주세요.", Toast.LENGTH_SHORT).show();
-            Log.d("남주","91");
             return;
         }
-        Log.d("남주","91");
-        ToDo todo = new ToDo(title_,memo_,priority,week);
-        Log.d("남주",todo.getTitle());
-        Intent intent = new Intent(MakeToDOActivity.this,MainActivity.class);
-        Log.d("남주","95");
-        intent.putExtra("todo",todo);
-        Log.d("남주","97");
-        startActivity(intent);
+
+        todo.setTitle(title_);
+        todo.setMemo(memo_);
+        todo.setPriority(priority);
+        for(int i= 0; i < 7; i++){
+            todo.setWeek(i,week[i]);
+        }
+
+        intent.putExtra("madetodo",todo);
+        setResult(RESULT_OK,intent);
+        finish();
+
     }
 
     private void checkWeek() {

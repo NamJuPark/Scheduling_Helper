@@ -16,8 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //static final int PICK_CONTACT_REQUEST = 0;
-    ToDo todo;
+    static final int PICK_CONTACT_REQUEST = 0;
     TabHost tabHost;
     ListView lvMon,lvTue,lvWed,lvThu,lvFri,lvSat,lvSun;
     ArrayList<ToDo> mon,tue,wed,thu,fri,sat,sun;
@@ -115,23 +114,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMyBlog() {
         Intent intent = new Intent(MainActivity.this,ShowMyBlogActivity.class);
-        //intent.putExtra("todo",todo);
         startActivity(intent);
     }
 
-//    @Override
-//    public void startActivityForResult(Intent intent, int requestCode) {
-//        super.startActivityForResult(intent, requestCode);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_CONTACT_REQUEST ) {
+            if (resultCode == RESULT_OK)
+                startActivity(data);
+        }
+    }
 
     public void onClick(View v){
+        ToDo todo = new ToDo("","",0,new boolean[7]);
         Intent intent = new Intent(MainActivity.this,MakeToDOActivity.class);
-        startActivity(intent);
+        intent.putExtra("maketodo",todo);
+        startActivityForResult(intent,PICK_CONTACT_REQUEST);
 
-        Log.d()
-        Intent intent2 = getIntent();
-        todo = intent2.getParcelableExtra("todo");
+        intent = getIntent();
+        todo = intent.getParcelableExtra("madetodo");
 
         addData(todo);
+
     }
 }
