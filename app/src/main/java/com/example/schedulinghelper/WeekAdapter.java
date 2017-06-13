@@ -83,4 +83,5 @@ public class WeekAdapter extends BaseAdapter{
         todo.get(changeIndex).setPriority(changedtodo.getPriority());
         notifyDataSetChanged();
     }
+
 }
