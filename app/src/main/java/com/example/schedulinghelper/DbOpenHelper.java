@@ -132,32 +132,27 @@ public class DbOpenHelper {
     }
 
     public void deleteInTue(String title) {
-        mDB.delete("tue", "title ='" + title + "'", null);
+        mDB.delete("tue", "title = ?", new String[]{title});
     }
 
     public void deleteInWed(String title) {
-        mDB.delete("wed", "title ='" + title + "'", null);
+        mDB.delete("wed", "title = ?", new String[]{title});
     }
 
     public void deleteInThu(String title) {
-        mDB.delete("thu", "title ='" + title + "'", null);
+        mDB.delete("thu", "title = ?", new String[]{title});
     }
 
     public void deleteInFri(String title) {
-        mDB.delete("fri", "title ='" + title + "'", null);
+        mDB.delete("fri", "title = ?", new String[]{title});
     }
 
     public void deleteInSat(String title) {
-        mDB.delete("sat", "title ='" + title + "'", null);
+        mDB.delete("sat", "title = ?", new String[]{title});
     }
 
     public void deleteInSun(String title) {
-        mDB.delete("sun", "title ='" + title + "'", null);
-    }
-
-
-    public Cursor sel() {
-        return mDB.rawQuery("select * from mon;",null);
+        mDB.delete("sun", "title = ?", new String[]{title});
     }
 
 
@@ -167,26 +162,21 @@ public class DbOpenHelper {
     }
 
     public Cursor getAllTue() {
-        return mDB.query("tue", null, null, null, null, null, "title desc");
-    }
+        return mDB.rawQuery("Select * FROM tue", null);    }
 
     public Cursor getAllWed() {
-        return mDB.query("wed", null, null, null, null, null, "title desc");
-    }
+        return mDB.rawQuery("Select * FROM wed", null);    }
 
     public Cursor getAllThu() {
-        return mDB.query("thu", null, null, null, null, null, "title desc");
+        return mDB.rawQuery("Select * FROM thu", null);
     }
 
     public Cursor getAllFri() {
-        return mDB.query("fri", null, null, null, null, null, "title desc");
-    }
+        return mDB.rawQuery("Select * FROM fri", null);    }
 
     public Cursor getAllSat() {
-        return mDB.query("sat", null, null, null, null, null, "title desc");
-    }
+        return mDB.rawQuery("Select * FROM sat", null);    }
 
     public Cursor getAllSun() {
-        return mDB.query("sun", null, null, null, null, null, "title desc");
-    }
+        return mDB.rawQuery("Select * FROM sun", null);    }
 }

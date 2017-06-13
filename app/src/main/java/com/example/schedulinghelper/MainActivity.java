@@ -344,47 +344,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setmCursor(int day) {
-        ToDo todo = new ToDo("", "", 0);
         mCursor = null;
         if (day == 0) {
             mCursor = mDbOpenHelper.getAllMon();
-            if (mCursor != null) {
-                try {
-                    mon.clear();
-                    mCursor.moveToFirst();
-                    do{
-                        todo.setTitle(mCursor.getString(0));
-                        todo.setMemo(mCursor.getString(1));
-                        todo.setPriority(mCursor.getInt(2));
-                        adapterMon.addToDO(todo);
-                    } while (mCursor.moveToNext());
-                    mCursor.close();
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
+            try {
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterMon.addToDO(todo);
                 }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
             }
-        }
-        else if (day == 1) {
+        } else if (day == 1) {
             mCursor = mDbOpenHelper.getAllTue();
-            if (mCursor != null) {
-                try {
-                    tue.clear();
-                    while (mCursor.moveToNext()){
-                        todo.setTitle(mCursor.getString(0));
-                        todo.setMemo(mCursor.getString(1));
-                        todo.setPriority(mCursor.getInt(2));
-                        adapterTue.addToDO(todo);
-                    }
-                    mCursor.close();
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
+            try {
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterTue.addToDO(todo);
                 }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
             }
+
         } else if (day == 2) {
             mCursor = mDbOpenHelper.getAllWed();
             try {
                 wed.clear();
-                while (mCursor.moveToNext()){
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
                     todo.setTitle(mCursor.getString(0));
                     todo.setMemo(mCursor.getString(1));
                     todo.setPriority(mCursor.getInt(2));
@@ -397,7 +392,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (day == 3) {
             mCursor = mDbOpenHelper.getAllThu();
             try {
-                while (mCursor.moveToNext()){
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
                     todo.setTitle(mCursor.getString(0));
                     todo.setMemo(mCursor.getString(1));
                     todo.setPriority(mCursor.getInt(2));
@@ -410,7 +406,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (day == 4) {
             mCursor = mDbOpenHelper.getAllFri();
             try {
-                while (mCursor.moveToNext()){
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
                     todo.setTitle(mCursor.getString(0));
                     todo.setMemo(mCursor.getString(1));
                     todo.setPriority(mCursor.getInt(2));
@@ -423,7 +420,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (day == 5) {
             mCursor = mDbOpenHelper.getAllSat();
             try {
-                while (mCursor.moveToNext()){
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
                     todo.setTitle(mCursor.getString(0));
                     todo.setMemo(mCursor.getString(1));
                     todo.setPriority(mCursor.getInt(2));
@@ -436,7 +434,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (day == 6) {
             mCursor = mDbOpenHelper.getAllSun();
             try {
-                while (mCursor.moveToNext()){
+                while (mCursor.moveToNext()) {
+                    ToDo todo = new ToDo("", "", 0);
                     todo.setTitle(mCursor.getString(0));
                     todo.setMemo(mCursor.getString(1));
                     todo.setPriority(mCursor.getInt(2));
@@ -717,7 +716,7 @@ public class MainActivity extends AppCompatActivity {
                 adapterSun.addToDO(todo);
                 mDbOpenHelper.INSERTInSun(todo.getTitle(), todo.getMemo(), todo.getPriority());
             } else {
-            Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
         }
     }

@@ -90,6 +90,10 @@ public class MakeToDOActivity extends AppCompatActivity {
             Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(memo_.equals("")){
+            Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (high.isChecked()) {
             priority = 0;
         } else if (mid.isChecked()) {
