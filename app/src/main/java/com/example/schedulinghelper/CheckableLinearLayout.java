@@ -16,6 +16,7 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
     public CheckableLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+
         // mIsChecked = false ;
     }
 
@@ -32,12 +33,11 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
         CheckBox cb = (CheckBox) findViewById(R.id.checkBox) ;
 
         setChecked(cb.isChecked() ? false : true) ;
-        // setChecked(mIsChecked ? false : true) ;
     }
 
     @Override
     public void setChecked(boolean checked) {
-        CheckBox cb = (CheckBox) findViewById(R.id.checkBox) ;
+        CheckBox cb = (CheckBox) findViewById(R.id.checkBox);
 
         if (cb.isChecked() != checked) {
             cb.setChecked(checked) ;

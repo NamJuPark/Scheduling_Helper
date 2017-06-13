@@ -72,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         lvClickEvent();
     }
 
-     private void lvClickEvent() {
+    private void lvClickEvent() {
+        intent = new Intent(MainActivity.this, MakeToDOActivity.class);
         lvMon.setOnItemClickListener(new AdapterView.OnItemClickListener() {//수정
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -316,13 +317,14 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("Sat").setContent(R.id.tabSat).setIndicator("토"));
         tabHost.addTab(tabHost.newTabSpec("Sun").setContent(R.id.tabSun).setIndicator("일"));
 
+
         String path = getExternalPath();
         File file = new File(path + "Scheduling Helper");
         file.mkdir();
 
         mDbOpenHelper = new DbOpenHelper(this);
         try {
-            mDbOpenHelper.open();
+            mDbOpenHelper = mDbOpenHelper.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -331,22 +333,127 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListView() {
-        ToDo todo = new ToDo("","",0);
-        mCursor = null;
-        mCursor = mDbOpenHelper.getAllMon();
-        while (mCursor.moveToNext())
-        {
-            todo.setTitle(mCursor);
-        }
+        setmCursor(0);
+        setmCursor(1);
+        setmCursor(2);
+        setmCursor(3);
+        setmCursor(4);
+        setmCursor(5);
+        setmCursor(6);
+
     }
 
+    public void setmCursor(int day) {
+        ToDo todo = new ToDo("", "", 0);
+        mCursor = null;
+        if (day == 0) {
+            mCursor = mDbOpenHelper.getAllMon();
+            if (mCursor != null) {
+                try {
+                    mon.clear();
+                    mCursor.moveToFirst();
+                    do{
+                        todo.setTitle(mCursor.getString(0));
+                        todo.setMemo(mCursor.getString(1));
+                        todo.setPriority(mCursor.getInt(2));
+                        adapterMon.addToDO(todo);
+                    } while (mCursor.moveToNext());
+                    mCursor.close();
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (day == 1) {
+            mCursor = mDbOpenHelper.getAllTue();
+            if (mCursor != null) {
+                try {
+                    tue.clear();
+                    while (mCursor.moveToNext()){
+                        todo.setTitle(mCursor.getString(0));
+                        todo.setMemo(mCursor.getString(1));
+                        todo.setPriority(mCursor.getInt(2));
+                        adapterTue.addToDO(todo);
+                    }
+                    mCursor.close();
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (day == 2) {
+            mCursor = mDbOpenHelper.getAllWed();
+            try {
+                wed.clear();
+                while (mCursor.moveToNext()){
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterWed.addToDO(todo);
+                }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        } else if (day == 3) {
+            mCursor = mDbOpenHelper.getAllThu();
+            try {
+                while (mCursor.moveToNext()){
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterThu.addToDO(todo);
+                }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        } else if (day == 4) {
+            mCursor = mDbOpenHelper.getAllFri();
+            try {
+                while (mCursor.moveToNext()){
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterFri.addToDO(todo);
+                }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        } else if (day == 5) {
+            mCursor = mDbOpenHelper.getAllSat();
+            try {
+                while (mCursor.moveToNext()){
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterSat.addToDO(todo);
+                }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        } else if (day == 6) {
+            mCursor = mDbOpenHelper.getAllSun();
+            try {
+                while (mCursor.moveToNext()){
+                    todo.setTitle(mCursor.getString(0));
+                    todo.setMemo(mCursor.getString(1));
+                    todo.setPriority(mCursor.getInt(2));
+                    adapterSun.addToDO(todo);
+                }
+                mCursor.close();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        menu.add(0, 1, 0, "중요도 정렬");
-        menu.add(0, 2, 0, "완료 일정 정리");
-        menu.add(0, 3, 0, "Go To Blog");
+        menu.add(0, 1, 0, "완료 일정 정리");
+        menu.add(0, 2, 0, "Go To Blog");
 
         return true;
     }
@@ -356,15 +463,13 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case 1:
-                break;
-            case 2:
                 ArrayList<String> endTodoArr = makeEndList();
                 writeFile(endTodoArr);
-                Intent intent2 = new Intent(MainActivity.this,showEndToDoActivity.class);
-                intent2.putExtra("filename",filename);
+                Intent intent2 = new Intent(MainActivity.this, showEndToDoActivity.class);
+                intent2.putExtra("filename", filename);
                 startActivity(intent2);
                 break;
-            case 3:
+            case 2:
                 showMyBlog();
                 break;
         }
@@ -374,13 +479,12 @@ public class MainActivity extends AppCompatActivity {
     public void checkpermission() {
         int permissioninfo = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if(permissioninfo == PackageManager.PERMISSION_GRANTED){}
-        else {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                Toast.makeText(this, "어플리케이션 설정에서 저장소 사용 권한을 허용해주세요",Toast.LENGTH_SHORT).show();
+        if (permissioninfo == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, "어플리케이션 설정에서 저장소 사용 권한을 허용해주세요", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-            }
-            else{
+            } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
             }
         }
@@ -555,79 +659,73 @@ public class MainActivity extends AppCompatActivity {
 
     private void addData(ToDo todo) {
         if (addDay == 0) {
-            if(checkTitle(mon, todo.getTitle())){
-                mDbOpenHelper.INSERTInMon(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(mon, todo.getTitle())) {
                 adapterMon.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInMon(todo.getTitle(), todo.getMemo(), todo.getPriority());
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
         }
         if (addDay == 1) {
-            if(checkTitle(tue, todo.getTitle())){
-                mDbOpenHelper.INSERTInTue(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(tue, todo.getTitle())) {
                 adapterTue.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInTue(todo.getTitle(), todo.getMemo(), todo.getPriority());
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
 
         }
         if (addDay == 2) {
-            if(checkTitle(tue, todo.getTitle())){
-                mDbOpenHelper.INSERTInWed(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(wed, todo.getTitle())) {
                 adapterWed.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInWed(todo.getTitle(), todo.getMemo(), todo.getPriority());
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
 
         }
         if (addDay == 3) {
-            if(checkTitle(tue, todo.getTitle())){
-                mDbOpenHelper.INSERTInThu(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(thu, todo.getTitle())) {
                 adapterThu.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInThu(todo.getTitle(), todo.getMemo(), todo.getPriority());
+
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
         }
         if (addDay == 4) {
-            if(checkTitle(tue, todo.getTitle())){
-                mDbOpenHelper.INSERTInFri(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(fri, todo.getTitle())) {
                 adapterFri.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInFri(todo.getTitle(), todo.getMemo(), todo.getPriority());
+
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
         }
 
         if (addDay == 5) {
-            if(checkTitle(tue, todo.getTitle())){
-                mDbOpenHelper.INSERTInSat(todo.getTitle(),todo.getMemo(),todo.getPriority());
+            if (checkTitle(sat, todo.getTitle())) {
                 adapterSat.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                mDbOpenHelper.INSERTInSat(todo.getTitle(), todo.getMemo(), todo.getPriority());
+
+            } else {
+                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
         }
         if (addDay == 6) {
-            if(checkTitle(tue, todo.getTitle())){
+            if (checkTitle(sun, todo.getTitle())) {
+                adapterSun.addToDO(todo);
+                mDbOpenHelper.INSERTInSun(todo.getTitle(), todo.getMemo(), todo.getPriority());
+            } else {
+            Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
             }
-            mDbOpenHelper.INSERTInSun(todo.getTitle(),todo.getMemo(),todo.getPriority());
-            adapterSun.addToDO(todo);
-            }
-            else{
-                Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
         }
     }
 
     //true면 생성 가능 false면 생성 불가능
-    public boolean checkTitle(ArrayList<ToDo> arr, String title){
-        for(int i = 0; i < arr.size(); i++){
-            if(arr.get(i).getTitle() == title){
-                return false;
-            }
+    public boolean checkTitle(ArrayList<ToDo> arr, String title) {
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i).getTitle() == title) return false;
         }
         return true;
     }
@@ -650,73 +748,71 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == 100) {
                 changedtodo = data.getParcelableExtra("changedtodo");
                 if (changeDay == 0) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         mDbOpenHelper.deleteInMon(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInMon(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+                        mDbOpenHelper.INSERTInMon(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
                         adapterMon.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 1) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         mDbOpenHelper.deleteInTue(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInTue(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+                        mDbOpenHelper.INSERTInTue(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
                         adapterTue.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 2) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
-                        mDbOpenHelper.deleteInWed(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInWed(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         adapterWed.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                        mDbOpenHelper.deleteInWed(changedtodo.getTitle());
+                        mDbOpenHelper.INSERTInWed(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 3) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
-                        mDbOpenHelper.deleteInThu(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInThu(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         adapterThu.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                        mDbOpenHelper.deleteInThu(changedtodo.getTitle());
+                        mDbOpenHelper.INSERTInThu(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 4) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
-                        mDbOpenHelper.deleteInFri(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInFri(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         adapterFri.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                        mDbOpenHelper.deleteInFri(changedtodo.getTitle());
+                        mDbOpenHelper.INSERTInFri(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
+
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 5) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
-                        mDbOpenHelper.deleteInSat(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInSat(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         adapterSat.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                        mDbOpenHelper.deleteInSat(changedtodo.getTitle());
+                        mDbOpenHelper.INSERTInSat(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
+
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 } else if (changeDay == 6) {
-                    if(checkTitle(mon,changedtodo.getTitle())){
-                        mDbOpenHelper.deleteInSun(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInSun(changedtodo.getTitle(),changedtodo.getMemo(),changedtodo.getPriority());
+                    if (checkTitle(mon, changedtodo.getTitle())) {
                         adapterSun.changeToDo(changeIndex, changedtodo);
-                    }
-                    else{
-                        Toast.makeText(this,"Title이 중복됩니다.",Toast.LENGTH_SHORT);
+                        mDbOpenHelper.deleteInSun(changedtodo.getTitle());
+                        mDbOpenHelper.INSERTInSun(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
+
+                    } else {
+                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
                     }
 
                 }
@@ -750,4 +846,5 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("maketodo", todo);
         startActivityForResult(intent, PICK_CONTACT_REQUEST);
     }
+
 }

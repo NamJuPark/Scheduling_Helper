@@ -97,32 +97,38 @@ public class DbOpenHelper {
         mDB.close();
     }
 
-    public void INSERTInMon(String title,String memo,int priority) {
-        mDB.rawQuery("insert into mon values ('"+title+"','"+memo+"','"+priority+"')",null);
+    public void INSERTInMon(String title, String memo, int priority) {
+        mDB.execSQL ("insert into mon values ('" + title + "','" + memo + "'," + priority + ");");
+     //   mDB.execSQL("insert into mon values ('title','memo','0');", null);
+
     }
 
-    public void INSERTInTue(String title,String memo,int priority) {
-        mDB.rawQuery("insert into tue values ('"+title+"','"+memo+"','"+priority+"')",null);
+    public void INSERTInTue(String title, String memo, int priority) {
+        mDB.execSQL("insert into tue values ('" + title + "','" + memo + "'," + priority + ");");
     }
 
-    public void INSERTInWed(String title,String memo,int priority) {
-        mDB.rawQuery("insert into wed values ('"+title+"','"+memo+"','"+priority+"')",null);
+    public void INSERTInWed(String title, String memo, int priority) {
+        mDB.execSQL("insert into wed values ('" + title + "','" + memo + "'," + priority + ");");
     }
-    public void INSERTInThu(String title,String memo,int priority) {
-        mDB.rawQuery("insert into thu values ('"+title+"','"+memo+"','"+priority+"')",null);
+
+    public void INSERTInThu(String title, String memo, int priority) {
+        mDB.execSQL("insert into thu values ('" + title + "','" + memo + "'," + priority + ");");
     }
-    public void INSERTInFri(String title,String memo,int priority) {
-        mDB.rawQuery("insert into fri values ('"+title+"','"+memo+"','"+priority+"')",null);
+
+    public void INSERTInFri(String title, String memo, int priority) {
+        mDB.execSQL("insert into fri values ('" + title + "','" + memo + "'," + priority + ");");
     }
-    public void INSERTInSat(String title,String memo,int priority) {
-        mDB.rawQuery("insert into sat values ('"+title+"','"+memo+"','"+priority+"')",null);
+
+    public void INSERTInSat(String title, String memo, int priority) {
+        mDB.execSQL("insert into sat values ('" + title + "','" + memo + "'," + priority + ");");
     }
-    public void INSERTInSun(String title,String memo,int priority) {
-        mDB.rawQuery("insert into sun values ('"+title+"','"+memo+"','"+priority+"')",null);
+
+    public void INSERTInSun(String title, String memo, int priority) {
+        mDB.execSQL("insert into sun values ('" + title + "','" + memo + "'," + priority + ");");
     }
 
     public void deleteInMon(String title) {
-        mDB.delete("mon", "title ='" + title + "'", null);
+        mDB.delete("mon", "title = ?", new String[]{title});
     }
 
     public void deleteInTue(String title) {
@@ -144,14 +150,20 @@ public class DbOpenHelper {
     public void deleteInSat(String title) {
         mDB.delete("sat", "title ='" + title + "'", null);
     }
-    public void deleteInSun(String title)
-    {
-        mDB.delete("sun","title ='" + title +"'",null);
+
+    public void deleteInSun(String title) {
+        mDB.delete("sun", "title ='" + title + "'", null);
+    }
+
+
+    public Cursor sel() {
+        return mDB.rawQuery("select * from mon;",null);
     }
 
 
     public Cursor getAllMon() {
-        return mDB.query("mon", null, null, null, null, null, "title desc");
+//        return mDB.query("mon", null, null, null, null, null, "title desc");
+        return mDB.rawQuery("Select * FROM mon", null);
     }
 
     public Cursor getAllTue() {
