@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     static final int PICK_CONTACT_REQUEST = 0;
     static final int PICK_CONTACT_REQUEST2 = 1;
-    MyManage manager;
+
     Intent intent;
     ToDo changedtodo;
     TabHost tabHost;
     int addDay;
     int changeDay, changeIndex;
+    String filename;
     ListView lvMon, lvTue, lvWed, lvThu, lvFri, lvSat, lvSun;
     ArrayList<ToDo> mon, tue, wed, thu, fri, sat, sun;
     WeekAdapter adapterMon, adapterTue, adapterWed, adapterThu, adapterFri, adapterSat, adapterSun;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         lvMon.setOnItemClickListener(new AdapterView.OnItemClickListener() {//수정
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 changeDay = 0;
                 changeIndex = i;
 
@@ -90,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 0);
                                 adapterMon.delToDo(item);
                             }
                         })
@@ -119,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 1);
                                 adapterTue.delToDo(item);
                             }
                         })
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 2);
                                 adapterWed.delToDo(item);
                             }
                         })
@@ -177,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 3);
                                 adapterThu.delToDo(item);
                             }
                         })
@@ -206,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 4);
                                 adapterFri.delToDo(item);
                             }
                         })
@@ -235,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 5);
                                 adapterSat.delToDo(item);
                             }
                         })
@@ -264,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                manager.delData(item + 1, 6);
                                 adapterSun.delToDo(item);
                             }
                         })
@@ -276,10 +271,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        filename = "";
 
         checkpermission();
-
-        manager = MyManage.getInstance(this);
 
         mon = new ArrayList<ToDo>();
         tue = new ArrayList<ToDo>();
@@ -339,6 +333,9 @@ public class MainActivity extends AppCompatActivity {
             case 2:
                 ArrayList<String> endTodoArr = makeEndList();
                 writeFile(endTodoArr);
+                Intent intent2 = new Intent(MainActivity.this,showEndToDoActivity.class);
+                intent2.putExtra("filename",filename);
+                startActivity(intent2);
                 break;
             case 3:
                 showMyBlog();
@@ -362,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getExternalPath() {
+    public String getExternalPath() {
         String sdPath = "";
         String ext = Environment.getExternalStorageState();
         if (ext.equals(Environment.MEDIA_MOUNTED)) {
@@ -375,7 +372,8 @@ public class MainActivity extends AppCompatActivity {
     private void writeFile(ArrayList<String> endTodoArr) {
         try {
             String path = getExternalPath();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(path + "Scheduling Helper/" + getfilename(), true));
+            filename = path + "Scheduling Helper/" + filename();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
             for (int i = 0; i < endTodoArr.size(); i++) {
                 bw.write(endTodoArr.get(i));
             }
@@ -386,10 +384,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getfilename() {
+    public String filename() {
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH/mm/ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         return dateFormat.format(date).toString() + ".txt";
     }
 
@@ -399,122 +397,125 @@ public class MainActivity extends AppCompatActivity {
         if (mon != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvMon.getCheckedItemPositions();
-            int count = adapterMon.getCount();
+            int count = lvMon.getCheckedItemCount();
 
-            for (int i = count - 1; i >= 0; i--) {
+            for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
                     endTodo = mon.get(i);
                     str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
                     if (endTodo.getPriority() == 0) str += " / 상 / ";
                     else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
                     str += "월요일\n";
                     endTodoArr.add(str);
+                    str = "";
                 }
             }
         }
-        if (tue != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvTue.getCheckedItemPositions();
-            int count = adapterTue.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = tue.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "화요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
-        if (wed != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvWed.getCheckedItemPositions();
-            int count = adapterWed.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = wed.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "수요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
-        if (thu != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvThu.getCheckedItemPositions();
-            int count = adapterThu.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = thu.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "목요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
-        if (fri != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvFri.getCheckedItemPositions();
-            int count = adapterFri.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = fri.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "금요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
-        if (sat != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvSat.getCheckedItemPositions();
-            int count = adapterSat.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = sat.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "토요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
-        if (sun != null) {
-            ToDo endTodo;
-            SparseBooleanArray checkedItems = lvSun.getCheckedItemPositions();
-            int count = adapterSun.getCount();
-
-            for (int i = count - 1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    endTodo = sun.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
-                    str += "일요일\n";
-                    endTodoArr.add(str);
-                }
-            }
-        }
+//        if (tue != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvTue.getCheckedItemPositions();
+//            int count = lvTue.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = tue.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "화요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
+//        if (wed != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvWed.getCheckedItemPositions();
+//            int count = lvWed.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = wed.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "수요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
+//        if (thu != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvThu.getCheckedItemPositions();
+//            int count = lvThu.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = thu.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "목요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
+//        if (fri != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvFri.getCheckedItemPositions();
+//            int count = lvFri.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = fri.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "금요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
+//        if (sat != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvSat.getCheckedItemPositions();
+//            int count = lvSat.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = sat.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "토요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
+//        if (sun != null) {
+//            ToDo endTodo;
+//            SparseBooleanArray checkedItems = lvSun.getCheckedItemPositions();
+//            int count = lvSun.getCheckedItemCount();
+//
+//            for (int i = count - 1; i >= 0; i--) {
+//                if (checkedItems.get(i)) {
+//                    endTodo = sun.get(i);
+//                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+//                    if (endTodo.getPriority() == 0) str += " / 상 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
+//                    else if (endTodo.getPriority() == 1) str += " / 하 / ";
+//                    str += "일요일\n";
+//                    endTodoArr.add(str);
+//                }
+//            }
+//        }
 
         return endTodoArr;
     }
