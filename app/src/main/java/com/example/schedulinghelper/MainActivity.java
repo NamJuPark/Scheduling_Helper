@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
             int count = lvMon.getCount();
 
             for(int j = 0; j < count; j++){
-                if(mon.get(j).getDone() == 0){
+                if(mon.get(j).getDone() == 1){
                     checkedItems.add(mon.get(j));
                 }
             }
@@ -554,110 +554,140 @@ public class MainActivity extends AppCompatActivity {
         }
         if (tue != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvTue.getCheckedItemPositions();
-            int count = lvTue.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = tue.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "화요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < tue.size(); j++){
+                if(tue.get(j).getDone() == 1){
+                    checkedItems.add(tue.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "화요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (wed != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvWed.getCheckedItemPositions();
-            int count = lvWed.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = wed.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "수요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < wed.size(); j++){
+                if(wed.get(j).getDone() == 1){
+                    checkedItems.add(wed.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "수요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (thu != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvThu.getCheckedItemPositions();
-            int count = lvThu.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = thu.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "목요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < thu.size(); j++){
+                if(thu.get(j).getDone() == 1){
+                    checkedItems.add(thu.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "목요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (fri != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvFri.getCheckedItemPositions();
-            int count = lvFri.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = fri.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "금요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < fri.size(); j++){
+                if(fri.get(j).getDone() == 1){
+                    checkedItems.add(fri.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "금요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (sat != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvSat.getCheckedItemPositions();
-            int count = lvSat.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = sat.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "토요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < sat.size(); j++){
+                if(sat.get(j).getDone() == 1){
+                    checkedItems.add(sat.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "토요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (sun != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvSun.getCheckedItemPositions();
-            int count = lvSun.getCount();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = sun.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
-                    str += "일요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+            for(int j = 0; j < sun.size(); j++){
+                if(sun.get(j).getDone() == 1){
+                    checkedItems.add(sun.get(j));
                 }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
+
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
+
+                str += "일요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
 

@@ -2,6 +2,7 @@ package com.example.schedulinghelper;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class WeekAdapter extends BaseAdapter {
             }
         });
         if(todo.get(i).getDone() == 0){
+            //미완료 상태 -> 체크박스 선택 안 됨
             cb.setChecked(false);
         }else{
             cb.setChecked(true);
