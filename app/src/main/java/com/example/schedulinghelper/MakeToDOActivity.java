@@ -87,11 +87,11 @@ public class MakeToDOActivity extends AppCompatActivity {
         memo_ = memo.getText().toString();
 
         if (title_.equals("")) {
-            Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Title을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         if(memo_.equals("")){
-            Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Memo을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (high.isChecked()) {
@@ -118,6 +118,10 @@ public class MakeToDOActivity extends AppCompatActivity {
 
         if (title_.equals("")) {
             Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(memo_.equals("")){
+            Toast.makeText(this, "Memo을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 

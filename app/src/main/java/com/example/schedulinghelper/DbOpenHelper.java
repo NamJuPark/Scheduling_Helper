@@ -27,46 +27,53 @@ public class DbOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String mon = "Create table if not exists mon ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + "done integer"
                     + ");";
             String tue = "Create table if not exists tue ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + "done integer"
                     + ");";
             String wed = "Create table if not exists wed ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + " done integer"
                     + ");";
             String thu = "Create table if not exists thu ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + " done integer"
                     + ");";
             String fri = "Create table if not exists fri ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + " done integer"
                     + ");";
             String sat = "Create table if not exists sat ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + " done integer"
                     + ");";
             String sun = "Create table if not exists sun ("
-                    + "title text primary key,"
+                    + "id text primary key,"
+                    + "title text,"
                     + "memo text,"
                     + "priority integer,"
-                    +" done integer"
+                    + " done integer"
                     + ");";
             db.execSQL(mon);
             db.execSQL(tue);
@@ -104,33 +111,42 @@ public class DbOpenHelper {
         mDB.close();
     }
 
-    public void INSERTInMon(String title, String memo, int priority) {
-        mDB.execSQL ("insert into mon values ('" + title + "','" + memo + "'," + priority + ",0);");
-
+    public void UPDATE(int day, int done, String id) {
+        if(day == 0) mDB.execSQL("Update mon set done = " + done + " where id = '"+id+ "';");
+        else if(day ==1) mDB.execSQL("Update tue set done = " + done + " where id = '"+id+ "';");
+        else if(day == 2) mDB.execSQL("Update wed set done = " + done + " where id = '"+id+ "';");
+        else if(day == 3) mDB.execSQL("Update thu set done = " + done + " where id = '"+id+ "';");
+        else if(day == 4) mDB.execSQL("Update fri set done = " + done + " where id = '"+id+ "';");
+        else if(day == 5) mDB.execSQL("Update sat set done = " + done + " where id = '"+id+ "';");
+        else if(day == 6) mDB.execSQL("Update sun set done = " + done + " where id = '"+id+ "';");
     }
 
-    public void INSERTInTue(String title, String memo, int priority) {
-        mDB.execSQL("insert into tue values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInMon(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into mon values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
-    public void INSERTInWed(String title, String memo, int priority) {
-        mDB.execSQL("insert into wed values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInTue(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into tue values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
-    public void INSERTInThu(String title, String memo, int priority) {
-        mDB.execSQL("insert into thu values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInWed(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into wed values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
-    public void INSERTInFri(String title, String memo, int priority) {
-        mDB.execSQL("insert into fri values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInThu(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into thu values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
-    public void INSERTInSat(String title, String memo, int priority) {
-        mDB.execSQL("insert into sat values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInFri(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into fri values('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
-    public void INSERTInSun(String title, String memo, int priority) {
-        mDB.execSQL("insert into sun values ('" + title + "','" + memo + "'," + priority + ",0);");
+    public void INSERTInSat(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into sat values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
+    }
+
+    public void INSERTInSun(String id, String title, String memo, int priority, int done) {
+        mDB.execSQL("insert into sun values ('" + id + "','" + title + "','" + memo + "'," + priority + ",0);");
     }
 
     public void deleteInMon(String title) {
@@ -163,26 +179,30 @@ public class DbOpenHelper {
 
 
     public Cursor getAllMon() {
-//        return mDB.query("mon", null, null, null, null, null, "title desc");
         return mDB.rawQuery("Select * FROM mon", null);
     }
 
     public Cursor getAllTue() {
-        return mDB.rawQuery("Select * FROM tue", null);    }
+        return mDB.rawQuery("Select * FROM tue", null);
+    }
 
     public Cursor getAllWed() {
-        return mDB.rawQuery("Select * FROM wed", null);    }
+        return mDB.rawQuery("Select * FROM wed", null);
+    }
 
     public Cursor getAllThu() {
         return mDB.rawQuery("Select * FROM thu", null);
     }
 
     public Cursor getAllFri() {
-        return mDB.rawQuery("Select * FROM fri", null);    }
+        return mDB.rawQuery("Select * FROM fri", null);
+    }
 
     public Cursor getAllSat() {
-        return mDB.rawQuery("Select * FROM sat", null);    }
+        return mDB.rawQuery("Select * FROM sat", null);
+    }
 
     public Cursor getAllSun() {
-        return mDB.rawQuery("Select * FROM sun", null);    }
+        return mDB.rawQuery("Select * FROM sun", null);
+    }
 }

@@ -31,7 +31,7 @@ public class showEndToDoActivity extends AppCompatActivity {
 
     private void readFile() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filename));
+            BufferedReader br = new BufferedReader(new FileReader(filename+".txt"));
             String readStr = "";
             String str = null;
             while ((str = br.readLine()) != null) {

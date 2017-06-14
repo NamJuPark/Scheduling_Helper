@@ -7,20 +7,16 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -93,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInMon(mon.get(item).getTitle());
+                                mDbOpenHelper.deleteInMon(mon.get(item).getId());
                                 adapterMon.delToDo(item);
                             }
                         })
@@ -122,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInTue(tue.get(item).getTitle());
+                                mDbOpenHelper.deleteInTue(tue.get(item).getId());
                                 adapterTue.delToDo(item);
                             }
                         })
@@ -151,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInWed(wed.get(item).getTitle());
+                                mDbOpenHelper.deleteInWed(wed.get(item).getId());
                                 adapterWed.delToDo(item);
                             }
                         })
@@ -180,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInThu(thu.get(item).getTitle());
+                                mDbOpenHelper.deleteInThu(thu.get(item).getId());
                                 adapterThu.delToDo(item);
                             }
                         })
@@ -209,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInFri(fri.get(item).getTitle());
+                                mDbOpenHelper.deleteInFri(fri.get(item).getId());
                                 adapterFri.delToDo(item);
                             }
                         })
@@ -238,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInSat(sat.get(item).getTitle());
+                                mDbOpenHelper.deleteInSat(sat.get(item).getId());
                                 adapterSat.delToDo(item);
                             }
                         })
@@ -267,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Y", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mDbOpenHelper.deleteInSun(sun.get(item).getTitle());
+                                mDbOpenHelper.deleteInSun(sun.get(item).getId());
                                 adapterSun.delToDo(item);
                             }
                         })
@@ -283,6 +279,13 @@ public class MainActivity extends AppCompatActivity {
 
         checkpermission();
 
+        mDbOpenHelper = new DbOpenHelper(this);
+        try {
+            mDbOpenHelper = mDbOpenHelper.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         mon = new ArrayList<ToDo>();
         tue = new ArrayList<ToDo>();
         wed = new ArrayList<ToDo>();
@@ -291,13 +294,13 @@ public class MainActivity extends AppCompatActivity {
         sat = new ArrayList<ToDo>();
         sun = new ArrayList<ToDo>();
 
-        adapterMon = new WeekAdapter(mon, this);
-        adapterTue = new WeekAdapter(tue, this);
-        adapterWed = new WeekAdapter(wed, this);
-        adapterThu = new WeekAdapter(thu, this);
-        adapterFri = new WeekAdapter(fri, this);
-        adapterSat = new WeekAdapter(sat, this);
-        adapterSun = new WeekAdapter(sun, this);
+        adapterMon = new WeekAdapter(mon, this, mDbOpenHelper);
+        adapterTue = new WeekAdapter(tue, this, mDbOpenHelper);
+        adapterWed = new WeekAdapter(wed, this, mDbOpenHelper);
+        adapterThu = new WeekAdapter(thu, this, mDbOpenHelper);
+        adapterFri = new WeekAdapter(fri, this, mDbOpenHelper);
+        adapterSat = new WeekAdapter(sat, this, mDbOpenHelper);
+        adapterSun = new WeekAdapter(sun, this, mDbOpenHelper);
 
         lvMon.setAdapter(adapterMon);
         lvTue.setAdapter(adapterTue);
@@ -315,13 +318,6 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("Fri").setContent(R.id.tabFri).setIndicator("금"));
         tabHost.addTab(tabHost.newTabSpec("Sat").setContent(R.id.tabSat).setIndicator("토"));
         tabHost.addTab(tabHost.newTabSpec("Sun").setContent(R.id.tabSun).setIndicator("일"));
-
-        mDbOpenHelper = new DbOpenHelper(this);
-        try {
-            mDbOpenHelper = mDbOpenHelper.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         setListView();
     }
@@ -343,10 +339,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllMon();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 0);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterMon.addToDO(todo);
                 }
                 mCursor.close();
@@ -357,10 +355,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllTue();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0 ,1);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterTue.addToDO(todo);
                 }
                 mCursor.close();
@@ -373,10 +373,12 @@ public class MainActivity extends AppCompatActivity {
             try {
                 wed.clear();
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 2);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterWed.addToDO(todo);
                 }
                 mCursor.close();
@@ -387,10 +389,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllThu();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 3);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterThu.addToDO(todo);
                 }
                 mCursor.close();
@@ -401,10 +405,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllFri();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 4);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterFri.addToDO(todo);
                 }
                 mCursor.close();
@@ -415,10 +421,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllSat();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 5);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterSat.addToDO(todo);
                 }
                 mCursor.close();
@@ -429,10 +437,12 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllSun();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", 0);
-                    todo.setTitle(mCursor.getString(0));
-                    todo.setMemo(mCursor.getString(1));
-                    todo.setPriority(mCursor.getInt(2));
+                    ToDo todo = new ToDo("", "", "", 0, 0, 6);
+                    todo.setId(mCursor.getString(0));
+                    todo.setTitle(mCursor.getString(1));
+                    todo.setMemo(mCursor.getString(2));
+                    todo.setPriority(mCursor.getInt(3));
+                    todo.setDone(mCursor.getInt(4));
                     adapterSun.addToDO(todo);
                 }
                 mCursor.close();
@@ -497,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             String path = getExternalPath();
             filename = path + "Scheduling Helper/" + filename();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filename + ".txt", true));
             for (int i = 0; i < endTodoArr.size(); i++) {
                 bw.write(endTodoArr.get(i));
             }
@@ -511,8 +521,8 @@ public class MainActivity extends AppCompatActivity {
     public String filename() {
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-        return dateFormat.format(date).toString() + ".txt";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        return dateFormat.format(date).toString();
     }
 
     private ArrayList<String> makeEndList() {
@@ -520,12 +530,17 @@ public class MainActivity extends AppCompatActivity {
         String str = "";
         if (mon != null) {
             ToDo endTodo;
-            SparseBooleanArray checkedItems = lvMon.getCheckedItemPositions();
+            ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
             int count = lvMon.getCount();
 
-            for (int i = 0; i < count; i++) {
-                if (checkedItems.get(i)) {
-                    endTodo = mon.get(i);
+            for(int j = 0; j < count; j++){
+                if(mon.get(j).getDone() == 0){
+                    checkedItems.add(mon.get(j));
+                }
+            }
+
+            for (int i = 0; i < checkedItems.size(); i++) {
+                    endTodo = checkedItems.get(i);
                     str += endTodo.getTitle() + " / " + endTodo.getMemo();
 
                     if (endTodo.getPriority() == 0) str += " / 상 / ";
@@ -535,7 +550,6 @@ public class MainActivity extends AppCompatActivity {
                     str += "월요일\n";
                     endTodoArr.add(str);
                     str = "";
-                }
             }
         }
         if (tue != null) {
@@ -652,75 +666,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void addData(ToDo todo) {
         if (addDay == 0) {
-            if (checkTitle(mon, todo.getTitle())) {
                 adapterMon.addToDO(todo);
-                mDbOpenHelper.INSERTInMon(todo.getTitle(), todo.getMemo(), todo.getPriority());
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
+                mDbOpenHelper.INSERTInMon(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 1) {
-            if (checkTitle(tue, todo.getTitle())) {
                 adapterTue.addToDO(todo);
-                mDbOpenHelper.INSERTInTue(todo.getTitle(), todo.getMemo(), todo.getPriority());
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
-
+                mDbOpenHelper.INSERTInTue(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 2) {
-            if (checkTitle(wed, todo.getTitle())) {
                 adapterWed.addToDO(todo);
-                mDbOpenHelper.INSERTInWed(todo.getTitle(), todo.getMemo(), todo.getPriority());
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
-
+                mDbOpenHelper.INSERTInWed(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 3) {
-            if (checkTitle(thu, todo.getTitle())) {
                 adapterThu.addToDO(todo);
-                mDbOpenHelper.INSERTInThu(todo.getTitle(), todo.getMemo(), todo.getPriority());
-
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
+                mDbOpenHelper.INSERTInThu(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 4) {
-            if (checkTitle(fri, todo.getTitle())) {
                 adapterFri.addToDO(todo);
-                mDbOpenHelper.INSERTInFri(todo.getTitle(), todo.getMemo(), todo.getPriority());
-
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
+                mDbOpenHelper.INSERTInFri(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
 
         if (addDay == 5) {
-            if (checkTitle(sat, todo.getTitle())) {
                 adapterSat.addToDO(todo);
-                mDbOpenHelper.INSERTInSat(todo.getTitle(), todo.getMemo(), todo.getPriority());
-
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
+                mDbOpenHelper.INSERTInSat(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 6) {
-            if (checkTitle(sun, todo.getTitle())) {
                 adapterSun.addToDO(todo);
-                mDbOpenHelper.INSERTInSun(todo.getTitle(), todo.getMemo(), todo.getPriority());
-            } else {
-                Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-            }
+                mDbOpenHelper.INSERTInSun(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
-    }
-
-    //true면 생성 가능 false면 생성 불가능
-    public boolean checkTitle(ArrayList<ToDo> arr, String title) {
-        for (int i = 0; i < arr.size(); i++) {
-            if (arr.get(i).getTitle() == title) return false;
-        }
-        return true;
     }
 
     private void showMyBlog() {
@@ -740,74 +713,35 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == 100) {
                 changedtodo = data.getParcelableExtra("changedtodo");
+
                 if (changeDay == 0) {
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        mDbOpenHelper.deleteInMon(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInMon(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-                        adapterMon.changeToDo(changeIndex, changedtodo);
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    mDbOpenHelper.deleteInMon(changedtodo.getId());
+                    mDbOpenHelper.INSERTInMon(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
+                    adapterMon.changeToDo(changeIndex, changedtodo);
                 } else if (changeDay == 1) {
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        mDbOpenHelper.deleteInTue(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInTue(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-                        adapterTue.changeToDo(changeIndex, changedtodo);
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    mDbOpenHelper.deleteInTue(changedtodo.getId());
+                    mDbOpenHelper.INSERTInTue(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
+                    adapterTue.changeToDo(changeIndex, changedtodo);
                 } else if (changeDay == 2) {
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        adapterWed.changeToDo(changeIndex, changedtodo);
-                        mDbOpenHelper.deleteInWed(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInWed(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    adapterWed.changeToDo(changeIndex, changedtodo);
+                    mDbOpenHelper.deleteInWed(changedtodo.getId());
+                    mDbOpenHelper.INSERTInWed(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                 } else if (changeDay == 3) {
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        adapterThu.changeToDo(changeIndex, changedtodo);
-                        mDbOpenHelper.deleteInThu(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInThu(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    adapterThu.changeToDo(changeIndex, changedtodo);
+                    mDbOpenHelper.deleteInThu(changedtodo.getId());
+                    mDbOpenHelper.INSERTInThu(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                 } else if (changeDay == 4) {
-
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        adapterFri.changeToDo(changeIndex, changedtodo);
-                        mDbOpenHelper.deleteInFri(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInFri(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    adapterFri.changeToDo(changeIndex, changedtodo);
+                    mDbOpenHelper.deleteInFri(changedtodo.getId());
+                    mDbOpenHelper.INSERTInFri(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                 } else if (changeDay == 5) {
-
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        adapterSat.changeToDo(changeIndex, changedtodo);
-                        mDbOpenHelper.deleteInSat(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInSat(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    adapterSat.changeToDo(changeIndex, changedtodo);
+                    mDbOpenHelper.deleteInSat(changedtodo.getId());
+                    mDbOpenHelper.INSERTInSat(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                 } else if (changeDay == 6) {
-                    if (checkTitle(mon, changedtodo.getTitle())) {
-                        adapterSun.changeToDo(changeIndex, changedtodo);
-                        mDbOpenHelper.deleteInSun(changedtodo.getTitle());
-                        mDbOpenHelper.INSERTInSun(changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority());
-
-                    } else {
-                        Toast.makeText(this, "Title이 중복됩니다.", Toast.LENGTH_SHORT);
-                    }
-
+                    adapterSun.changeToDo(changeIndex, changedtodo);
+                    mDbOpenHelper.deleteInSun(changedtodo.getId());
+                    mDbOpenHelper.INSERTInSun(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                 }
                 notifyAllLv();
             }
@@ -827,19 +761,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View v) {
 
+        ToDo todo =  new ToDo(filename(),"", "", 0, 0, 0);;
+
         String path = getExternalPath();
         File file = new File(path + "Scheduling Helper");
         file.mkdir();
 
-        if (v.getId() == R.id.btMon) addDay = 0;
-        else if (v.getId() == R.id.btTue) addDay = 1;
-        else if (v.getId() == R.id.btWed) addDay = 2;
-        else if (v.getId() == R.id.btThu) addDay = 3;
-        else if (v.getId() == R.id.btFri) addDay = 4;
-        else if (v.getId() == R.id.btSat) addDay = 5;
-        else if (v.getId() == R.id.btSun) addDay = 6;
+        if (v.getId() == R.id.btMon) {
+            addDay = 0;
+        }
+        else if (v.getId() == R.id.btTue){
+            addDay = 1;
+            todo.setDay(1);
+        }
+        else if (v.getId() == R.id.btWed){
+            addDay = 2;
+            todo.setDay(2);
+        }
+        else if (v.getId() == R.id.btThu) {
+            addDay = 3;
+            todo.setDay(3);
+        }
+        else if (v.getId() == R.id.btFri){
+            addDay = 4;
+            todo.setDay(4);
+        }
+        else if (v.getId() == R.id.btSat){
+            addDay = 5;
+            todo.setDay(5);
+        }
+        else if (v.getId() == R.id.btSun) {
+            addDay = 6;
+            todo.setDay(6);
+        }
 
-        ToDo todo = new ToDo("", "", 0);
         intent = new Intent(MainActivity.this, MakeToDOActivity.class);
         intent.putExtra("maketodo", todo);
         startActivityForResult(intent, PICK_CONTACT_REQUEST);
