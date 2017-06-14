@@ -316,11 +316,6 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("Sat").setContent(R.id.tabSat).setIndicator("토"));
         tabHost.addTab(tabHost.newTabSpec("Sun").setContent(R.id.tabSun).setIndicator("일"));
 
-
-        String path = getExternalPath();
-        File file = new File(path + "Scheduling Helper");
-        file.mkdir();
-
         mDbOpenHelper = new DbOpenHelper(this);
         try {
             mDbOpenHelper = mDbOpenHelper.open();
@@ -831,6 +826,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClick(View v) {
+
+        String path = getExternalPath();
+        File file = new File(path + "Scheduling Helper");
+        file.mkdir();
+
         if (v.getId() == R.id.btMon) addDay = 0;
         else if (v.getId() == R.id.btTue) addDay = 1;
         else if (v.getId() == R.id.btWed) addDay = 2;
