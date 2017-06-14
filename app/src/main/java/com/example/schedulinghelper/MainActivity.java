@@ -746,7 +746,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (changeDay == 0) {
                     mDbOpenHelper.deleteInMon(changedtodo.getId());
-                    mDbOpenHelper.INSERTInMon(changedtodo.getId(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
+                    mDbOpenHelper.INSERTInMon(filename(), changedtodo.getTitle(), changedtodo.getMemo(), changedtodo.getPriority(), changedtodo.getDone());
                     adapterMon.changeToDo(changeIndex, changedtodo);
                 } else if (changeDay == 1) {
                     mDbOpenHelper.deleteInTue(changedtodo.getId());

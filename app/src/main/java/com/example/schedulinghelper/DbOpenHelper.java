@@ -150,31 +150,31 @@ public class DbOpenHelper {
     }
 
     public void deleteInMon(String title) {
-        mDB.delete("mon", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from mon where id = "+  title);
     }
 
     public void deleteInTue(String title) {
-        mDB.delete("tue", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from tue where id = "+  title);
     }
 
     public void deleteInWed(String title) {
-        mDB.delete("wed", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from wed where id = "+  title);
     }
 
     public void deleteInThu(String title) {
-        mDB.delete("thu", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from thu where id = "+  title);
     }
 
     public void deleteInFri(String title) {
-        mDB.delete("fri", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from fri where id = "+  title);
     }
 
     public void deleteInSat(String title) {
-        mDB.delete("sat", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from sat where id = "+  title);
     }
 
     public void deleteInSun(String title) {
-        mDB.delete("sun", "title = ?", new String[]{title});
+        mDB.execSQL("Delete from sun where id = "+  title);
     }
 
 
