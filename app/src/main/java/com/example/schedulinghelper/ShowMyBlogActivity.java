@@ -56,7 +56,6 @@ public class ShowMyBlogActivity extends AppCompatActivity {
                             adapter.notifyDataSetChanged();
                         }
                     });
-                    Log.d("남주","65");
                     urlConnection.disconnect();
                 }
             } catch (MalformedURLException e) {

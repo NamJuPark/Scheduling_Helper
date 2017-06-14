@@ -37,7 +37,6 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     static final int PICK_CONTACT_REQUEST = 0;
-    static final int PICK_CONTACT_REQUEST2 = 1;
 
     Intent intent;
     ToDo changedtodo;
@@ -527,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
         if (mon != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvMon.getCheckedItemPositions();
-            int count = lvMon.getCheckedItemCount();
+            int count = lvMon.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -547,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
         if (tue != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvTue.getCheckedItemPositions();
-            int count = lvTue.getCheckedItemCount();
+            int count = lvTue.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -565,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
         if (wed != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvWed.getCheckedItemPositions();
-            int count = lvWed.getCheckedItemCount();
+            int count = lvWed.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -583,7 +582,7 @@ public class MainActivity extends AppCompatActivity {
         if (thu != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvThu.getCheckedItemPositions();
-            int count = lvThu.getCheckedItemCount();
+            int count = lvThu.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -601,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
         if (fri != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvFri.getCheckedItemPositions();
-            int count = lvFri.getCheckedItemCount();
+            int count = lvFri.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -619,7 +618,7 @@ public class MainActivity extends AppCompatActivity {
         if (sat != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvSat.getCheckedItemPositions();
-            int count = lvSat.getCheckedItemCount();
+            int count = lvSat.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -637,7 +636,7 @@ public class MainActivity extends AppCompatActivity {
         if (sun != null) {
             ToDo endTodo;
             SparseBooleanArray checkedItems = lvSun.getCheckedItemPositions();
-            int count = lvSun.getCheckedItemCount();
+            int count = lvSun.getCount();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {

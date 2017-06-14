@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 
 public class DbOpenHelper {
-    private static final String DATABASE_NAME = "MengmojangDB";
+    private static final String DATABASE_NAME = "SHDB";
     private static final int DATABASE_VERSION = 1;
     public static SQLiteDatabase mDB;
     private DatabaseHelper mDBHelper;
