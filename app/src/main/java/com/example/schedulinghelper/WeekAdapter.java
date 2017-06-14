@@ -69,19 +69,26 @@ public class WeekAdapter extends BaseAdapter {
                     todo.get(i).setDone(0);
                     title.setPaintFlags(title.getPaintFlags() ^ Paint.STRIKE_THRU_TEXT_FLAG);
                 }
-                if(todo.get(i).getDay() == 0) mDbOpenHelper.UPDATE(0,todo.get(i).getDone(), todo.get(i).getId());
-                else if(todo.get(i).getDay() == 1) mDbOpenHelper.UPDATE(1,todo.get(i).getDone(),todo.get(i).getId());
-                else if(todo.get(i).getDay() == 2) mDbOpenHelper.UPDATE(2,todo.get(i).getDone(), todo.get(i).getId());
-                else if(todo.get(i).getDay() == 3) mDbOpenHelper.UPDATE(3,todo.get(i).getDone(), todo.get(i).getId());
-                else if(todo.get(i).getDay() == 4) mDbOpenHelper.UPDATE(4,todo.get(i).getDone(), todo.get(i).getId());
-                else if(todo.get(i).getDay() == 5) mDbOpenHelper.UPDATE(5,todo.get(i).getDone(), todo.get(i).getId());
-                else if(todo.get(i).getDay() == 6) mDbOpenHelper.UPDATE(6,todo.get(i).getDone(), todo.get(i).getId());
+                if (todo.get(i).getDay() == 0)
+                    mDbOpenHelper.UPDATE(0, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 1)
+                    mDbOpenHelper.UPDATE(1, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 2)
+                    mDbOpenHelper.UPDATE(2, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 3)
+                    mDbOpenHelper.UPDATE(3, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 4)
+                    mDbOpenHelper.UPDATE(4, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 5)
+                    mDbOpenHelper.UPDATE(5, todo.get(i).getDone(), todo.get(i).getId());
+                else if (todo.get(i).getDay() == 6)
+                    mDbOpenHelper.UPDATE(6, todo.get(i).getDone(), todo.get(i).getId());
             }
         });
-        if(todo.get(i).getDone() == 0){
+        if (todo.get(i).getDone() == 0) {
             //미완료 상태 -> 체크박스 선택 안 됨
             cb.setChecked(false);
-        }else{
+        } else {
             cb.setChecked(true);
         }
         return view;

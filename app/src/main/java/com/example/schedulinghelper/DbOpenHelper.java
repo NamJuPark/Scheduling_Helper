@@ -112,13 +112,19 @@ public class DbOpenHelper {
     }
 
     public void UPDATE(int day, int done, String id) {
-        if(day == 0) mDB.execSQL("Update mon set done = " + done + " where id = '"+id+ "';");
-        else if(day ==1) mDB.execSQL("Update tue set done = " + done + " where id = '"+id+ "';");
-        else if(day == 2) mDB.execSQL("Update wed set done = " + done + " where id = '"+id+ "';");
-        else if(day == 3) mDB.execSQL("Update thu set done = " + done + " where id = '"+id+ "';");
-        else if(day == 4) mDB.execSQL("Update fri set done = " + done + " where id = '"+id+ "';");
-        else if(day == 5) mDB.execSQL("Update sat set done = " + done + " where id = '"+id+ "';");
-        else if(day == 6) mDB.execSQL("Update sun set done = " + done + " where id = '"+id+ "';");
+        if (day == 0) mDB.execSQL("Update mon set done = " + done + " where id = '" + id + "';");
+        else if (day == 1)
+            mDB.execSQL("Update tue set done = " + done + " where id = '" + id + "';");
+        else if (day == 2)
+            mDB.execSQL("Update wed set done = " + done + " where id = '" + id + "';");
+        else if (day == 3)
+            mDB.execSQL("Update thu set done = " + done + " where id = '" + id + "';");
+        else if (day == 4)
+            mDB.execSQL("Update fri set done = " + done + " where id = '" + id + "';");
+        else if (day == 5)
+            mDB.execSQL("Update sat set done = " + done + " where id = '" + id + "';");
+        else if (day == 6)
+            mDB.execSQL("Update sun set done = " + done + " where id = '" + id + "';");
     }
 
     public void INSERTInMon(String id, String title, String memo, int priority, int done) {
@@ -150,33 +156,32 @@ public class DbOpenHelper {
     }
 
     public void deleteInMon(String title) {
-        mDB.execSQL("Delete from mon where id = "+  title);
+        mDB.execSQL("Delete from mon where id = " + title);
     }
 
     public void deleteInTue(String title) {
-        mDB.execSQL("Delete from tue where id = "+  title);
+        mDB.execSQL("Delete from tue where id = " + title);
     }
 
     public void deleteInWed(String title) {
-        mDB.execSQL("Delete from wed where id = "+  title);
+        mDB.execSQL("Delete from wed where id = " + title);
     }
 
     public void deleteInThu(String title) {
-        mDB.execSQL("Delete from thu where id = "+  title);
+        mDB.execSQL("Delete from thu where id = " + title);
     }
 
     public void deleteInFri(String title) {
-        mDB.execSQL("Delete from fri where id = "+  title);
+        mDB.execSQL("Delete from fri where id = " + title);
     }
 
     public void deleteInSat(String title) {
-        mDB.execSQL("Delete from sat where id = "+  title);
+        mDB.execSQL("Delete from sat where id = " + title);
     }
 
     public void deleteInSun(String title) {
-        mDB.execSQL("Delete from sun where id = "+  title);
+        mDB.execSQL("Delete from sun where id = " + title);
     }
-
 
     public Cursor getAllMon() {
         return mDB.rawQuery("Select * FROM mon", null);

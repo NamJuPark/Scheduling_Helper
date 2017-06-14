@@ -44,18 +44,18 @@ public class MakeToDOActivity extends AppCompatActivity {
         low = (RadioButton) findViewById(R.id.rbLow);
 
         intent = getIntent();
-        changestate = intent.getBooleanExtra("state",false);
+        changestate = intent.getBooleanExtra("state", false);
 
-        if(changestate){
+        if (changestate) {
             intent = getIntent();
             todo = intent.getParcelableExtra("changetodo");
 
             title.setText(todo.getTitle());
             memo.setText(todo.getMemo());
 
-            if(todo.getPriority() == 0) high.setChecked(true);
-            else if(todo.getPriority() == 1) mid.setChecked(true);
-            else if(todo.getPriority() == 2) low.setChecked(true);
+            if (todo.getPriority() == 0) high.setChecked(true);
+            else if (todo.getPriority() == 1) mid.setChecked(true);
+            else if (todo.getPriority() == 2) low.setChecked(true);
         }
 
     }
@@ -70,10 +70,9 @@ public class MakeToDOActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
-            if(changestate) {
+            if (changestate) {
                 change();
-            }
-            else save();
+            } else save();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -90,7 +89,7 @@ public class MakeToDOActivity extends AppCompatActivity {
             Toast.makeText(this, "Title을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(memo_.equals("")){
+        if (memo_.equals("")) {
             Toast.makeText(this, "Memo을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -120,7 +119,7 @@ public class MakeToDOActivity extends AppCompatActivity {
             Toast.makeText(this, "Title을 입력해 주세요.(필수항목)", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(memo_.equals("")){
+        if (memo_.equals("")) {
             Toast.makeText(this, "Memo을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }

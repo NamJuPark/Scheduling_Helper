@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by 박남주 on 2017-06-11.
  */
 
- public class ToDo implements Parcelable {
+public class ToDo implements Parcelable {
 
     private String id;
     private String title;
@@ -20,7 +20,7 @@ import java.util.Date;
     private int done;
     private int day;
 
-    ToDo(String id,String title, String memo, int priority,int done,int day){
+    ToDo(String id, String title, String memo, int priority, int done, int day) {
         this.id = id;
         this.title = title;
         this.memo = memo;
@@ -62,6 +62,7 @@ import java.util.Date;
     public int getPriority() {
         return priority;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -73,16 +74,39 @@ import java.util.Date;
     public void setPriority(int priority) {
         this.priority = priority;
     }
-    public void setWeekArray(boolean[] weekArray) {}
-    public String getId() {return id;}
-    public void setId(String id) {this.id = id;}
-    public int getDone() {return done;}
-    public void setDone(int done) {this.done = done;}
-    public int getDay() {return day;}
-    public void setDay(int day) {this.day = day;}
+
+    public void setWeekArray(boolean[] weekArray) {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
 
     @Override
-    public int describeContents() {return 0;}
+    public int describeContents() {
+        return 0;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);

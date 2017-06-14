@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
             mCursor = mDbOpenHelper.getAllTue();
             try {
                 while (mCursor.moveToNext()) {
-                    ToDo todo = new ToDo("", "", "", 0, 0 ,1);
+                    ToDo todo = new ToDo("", "", "", 0, 0, 1);
                     todo.setId(mCursor.getString(0));
                     todo.setTitle(mCursor.getString(1));
                     todo.setMemo(mCursor.getString(2));
@@ -533,31 +533,31 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
             int count = lvMon.getCount();
 
-            for(int j = 0; j < count; j++){
-                if(mon.get(j).getDone() == 1){
+            for (int j = 0; j < count; j++) {
+                if (mon.get(j).getDone() == 1) {
                     checkedItems.add(mon.get(j));
                 }
             }
 
             for (int i = 0; i < checkedItems.size(); i++) {
-                    endTodo = checkedItems.get(i);
-                    str += endTodo.getTitle() + " / " + endTodo.getMemo();
+                endTodo = checkedItems.get(i);
+                str += endTodo.getTitle() + " / " + endTodo.getMemo();
 
-                    if (endTodo.getPriority() == 0) str += " / 상 / ";
-                    else if (endTodo.getPriority() == 1) str += " / 중 / ";
-                    else if (endTodo.getPriority() == 2) str += " / 하 / ";
+                if (endTodo.getPriority() == 0) str += " / 상 / ";
+                else if (endTodo.getPriority() == 1) str += " / 중 / ";
+                else if (endTodo.getPriority() == 2) str += " / 하 / ";
 
-                    str += "월요일\n";
-                    endTodoArr.add(str);
-                    str = "";
+                str += "월요일\n";
+                endTodoArr.add(str);
+                str = "";
             }
         }
         if (tue != null) {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < tue.size(); j++){
-                if(tue.get(j).getDone() == 1){
+            for (int j = 0; j < tue.size(); j++) {
+                if (tue.get(j).getDone() == 1) {
                     checkedItems.add(tue.get(j));
                 }
             }
@@ -579,8 +579,8 @@ public class MainActivity extends AppCompatActivity {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < wed.size(); j++){
-                if(wed.get(j).getDone() == 1){
+            for (int j = 0; j < wed.size(); j++) {
+                if (wed.get(j).getDone() == 1) {
                     checkedItems.add(wed.get(j));
                 }
             }
@@ -602,8 +602,8 @@ public class MainActivity extends AppCompatActivity {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < thu.size(); j++){
-                if(thu.get(j).getDone() == 1){
+            for (int j = 0; j < thu.size(); j++) {
+                if (thu.get(j).getDone() == 1) {
                     checkedItems.add(thu.get(j));
                 }
             }
@@ -625,8 +625,8 @@ public class MainActivity extends AppCompatActivity {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < fri.size(); j++){
-                if(fri.get(j).getDone() == 1){
+            for (int j = 0; j < fri.size(); j++) {
+                if (fri.get(j).getDone() == 1) {
                     checkedItems.add(fri.get(j));
                 }
             }
@@ -648,8 +648,8 @@ public class MainActivity extends AppCompatActivity {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < sat.size(); j++){
-                if(sat.get(j).getDone() == 1){
+            for (int j = 0; j < sat.size(); j++) {
+                if (sat.get(j).getDone() == 1) {
                     checkedItems.add(sat.get(j));
                 }
             }
@@ -671,8 +671,8 @@ public class MainActivity extends AppCompatActivity {
             ToDo endTodo;
             ArrayList<ToDo> checkedItems = new ArrayList<ToDo>();
 
-            for(int j = 0; j < sun.size(); j++){
-                if(sun.get(j).getDone() == 1){
+            for (int j = 0; j < sun.size(); j++) {
+                if (sun.get(j).getDone() == 1) {
                     checkedItems.add(sun.get(j));
                 }
             }
@@ -696,33 +696,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void addData(ToDo todo) {
         if (addDay == 0) {
-                adapterMon.addToDO(todo);
-                mDbOpenHelper.INSERTInMon(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterMon.addToDO(todo);
+            mDbOpenHelper.INSERTInMon(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 1) {
-                adapterTue.addToDO(todo);
-                mDbOpenHelper.INSERTInTue(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterTue.addToDO(todo);
+            mDbOpenHelper.INSERTInTue(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 2) {
-                adapterWed.addToDO(todo);
-                mDbOpenHelper.INSERTInWed(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterWed.addToDO(todo);
+            mDbOpenHelper.INSERTInWed(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 3) {
-                adapterThu.addToDO(todo);
-                mDbOpenHelper.INSERTInThu(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterThu.addToDO(todo);
+            mDbOpenHelper.INSERTInThu(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 4) {
-                adapterFri.addToDO(todo);
-                mDbOpenHelper.INSERTInFri(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterFri.addToDO(todo);
+            mDbOpenHelper.INSERTInFri(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
 
         if (addDay == 5) {
-                adapterSat.addToDO(todo);
-                mDbOpenHelper.INSERTInSat(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterSat.addToDO(todo);
+            mDbOpenHelper.INSERTInSat(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
         if (addDay == 6) {
-                adapterSun.addToDO(todo);
-                mDbOpenHelper.INSERTInSun(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
+            adapterSun.addToDO(todo);
+            mDbOpenHelper.INSERTInSun(todo.getId(), todo.getTitle(), todo.getMemo(), todo.getPriority(), todo.getDone());
         }
     }
 
@@ -791,7 +791,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View v) {
 
-        ToDo todo =  new ToDo(filename(),"", "", 0, 0, 0);;
+        ToDo todo = new ToDo(filename(), "", "", 0, 0, 0);
+        ;
 
         String path = getExternalPath();
         File file = new File(path + "Scheduling Helper");
@@ -799,28 +800,22 @@ public class MainActivity extends AppCompatActivity {
 
         if (v.getId() == R.id.btMon) {
             addDay = 0;
-        }
-        else if (v.getId() == R.id.btTue){
+        } else if (v.getId() == R.id.btTue) {
             addDay = 1;
             todo.setDay(1);
-        }
-        else if (v.getId() == R.id.btWed){
+        } else if (v.getId() == R.id.btWed) {
             addDay = 2;
             todo.setDay(2);
-        }
-        else if (v.getId() == R.id.btThu) {
+        } else if (v.getId() == R.id.btThu) {
             addDay = 3;
             todo.setDay(3);
-        }
-        else if (v.getId() == R.id.btFri){
+        } else if (v.getId() == R.id.btFri) {
             addDay = 4;
             todo.setDay(4);
-        }
-        else if (v.getId() == R.id.btSat){
+        } else if (v.getId() == R.id.btSat) {
             addDay = 5;
             todo.setDay(5);
-        }
-        else if (v.getId() == R.id.btSun) {
+        } else if (v.getId() == R.id.btSun) {
             addDay = 6;
             todo.setDay(6);
         }
