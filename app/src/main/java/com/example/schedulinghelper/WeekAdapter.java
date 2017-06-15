@@ -22,7 +22,6 @@ public class WeekAdapter extends BaseAdapter {
     Context c;
     DbOpenHelper mDbOpenHelper;
     TextView memo;
-    CheckBox cb;
 
     WeekAdapter(ArrayList<ToDo> todo, Context c, DbOpenHelper mDbOpenHelper) {
         this.todo = todo;
@@ -53,8 +52,8 @@ public class WeekAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.listview_item, null);
         }
         final TextView title = (TextView) view.findViewById(R.id.title);
-        memo = (TextView) view.findViewById(R.id.memo);
-        cb = (CheckBox) view.findViewById(R.id.checkBox);
+        TextView memo = (TextView) view.findViewById(R.id.memo);
+        CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
 
         title.setText(todo.get(i).getTitle());
         memo.setText(todo.get(i).getMemo());
@@ -85,6 +84,7 @@ public class WeekAdapter extends BaseAdapter {
                     mDbOpenHelper.UPDATE(6, todo.get(i).getDone(), todo.get(i).getId());
             }
         });
+
         if (todo.get(i).getDone() == 0) {
             //미완료 상태 -> 체크박스 선택 안 됨
             cb.setChecked(false);
